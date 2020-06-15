@@ -23,36 +23,34 @@ def valid_move?(board, index)
   index.between?(0,8) && !position_taken?(board, index)
 end
 
-def current_player(board)
-  turn_count(board) % 2 == 0? "X" : "O"
-end
-
 def turn(board)
   puts "Please enter 1-9:"
-  user_input = gets.strip
-  index = input_to_index(user_input)
+  input = gets.strip
+  index = input_to_index(input)
   if valid_move?(board, index)
-    player_move(board, index, current_player(board))
+    move(board, index)
     display_board(board)
   else
     turn(board)
   end
 end
 
-def turn_count(board)
-  counter = 0
-  board.each {|space|
-    if space == "X" || space == "O"
-      counter += 1
-    end
-  }
-  counter
-end
-
 def play(board)
   counter = 0
   until counter == 9
-    turn(board)
-    counter += 1
+  turn(board)
+  counter += 1
+  end
+end
+
+def play(board)
+  until over?(board)
+    turn(board) 
+  end
+  if won?(board)
+    winner(board) == "X" || winner(board) == "O"
+    puts "Congratulations #{winner(board)}!"
+  else draw?(board)
+    puts "Cat\'s Game!"
   end
 end
